@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Jerusalem Graffiti Map</title>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+  <link href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"></script>
+  <!--  <script src="https://raw.githubusercontent.com/leaflet-extras/leaflet-providers/master/leaflet-providers.js"></script>-->
+  <!--  <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+
+  <style type="text/css">
+    /* http://bl.ocks.org/zross/47760925fcb1643b4225 */
+
+    body {
+      background: #000;
+    }
+
+    h2,
+    p {
+      color: #f8f9fa;
+    }
+
+    #map {
+      /*      width: 50vw;*/
+      height: 90vh;
+    }
+
+    #content {
+      height: 90vh;
+      margin-top: 3rem;
+      -webkit-transition: opacity .5s ease-in-out;
+      -moz-transition: opacity .5s ease-in-out;
+      -ms-transition: opacity .5s ease-in-out;
+      -o-transition: opacity .5s ease-in-out;
+      transition: opacity .5s ease-in-out;
+
+    }
+
+    button {
+      margin: 10px 0.5rem 10px 0;
+    }
+
+    .leaflet-popup {
+      width: 55vw;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <button type="button" id="alllayers" class="btn btn-sm btn-light">All</button>
+        <button type="button" id="nolayers" class="btn btn-sm btn-dark">None</button>
+        <button type="button" id="english" class="btn btn-sm">English</button>
+        <button type="button" id="arabic" class="btn btn-sm">Arabic</button>
+        
+        <!--  The Map -->
+        <div id="map"></div>
+      
+      </div>
+      
+      <div class="col-sm-4" id="content">
+        <h2> Jerusalem Graffiti Map</h2>
+        <p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    
+    var colors = {
+      "english": {
+        "name": `cyan`,
+        "code": `#00ffff`
+      },
+      "arabic": {
+        "name": `magenta`,
+        "code": `#eb00ff`
+      }
+    };
+
+    document.getElementById("arabic").style.backgroundColor = colors.arabic.code;
+    document.getElementById("english").style.backgroundColor = colors.english.code;
+
+    var content = [0];
+    var contentDiv = document.getElementById('content');
+    var currentID = 0;
+
+    function onEachFeature(feature, layer) {
+      var contentHtml = `<img src="img/` + feature.properties.Name + `" />`;
+      contentHtml += `<h2>` + feature.properties.Title + `</h2>`;
+      contentHtml += `<p>` + feature.properties.Description + `</p>`;
+      content[feature.properties.id] = contentHtml;
+    }
+
+    function renderThisContent(e) {
+      contentDiv.style.opacity = 0;
+      currentID = e.target.feature.properties.id;
+
+      setTimeout(function() {
+        contentDiv.innerHTML = content[currentID];
+        // console.log("Marker with id : " + currentID);
+        contentDiv.style.opacity = 1;
+      }, 500);
+    }
+
+    // MAP
+
+    var Stamen_TonerBackground = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20,
+      ext: 'png'
+    });
+    var CartoDB_DarkMatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    });
+
+    var CartoDB_DarkMatterNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    });
+
+    var map = L.map('map')
+      .addLayer(CartoDB_DarkMatterNoLabels)
+      .setView([31.7852527, 35.231493600], 20)
+      .setZoom(12);
+
+    function iconColor(color) {
+      return L.icon({
+        iconUrl: `icn/circle-` + color + `.svg`,
+        iconSize: [10, 10]
+      });
+
+    }
+
+    function circleiconColor(color) {
+      return {
+        radius: 8,
+        fillColor: color,
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.5
+      }
+    }
+
+    var promise = $.getJSON("grafs.json");
+    promise.then(function(data) {
+
+      L.geoJson(data, {
+        onEachFeature: onEachFeature
+      });
+      
+      var arabic = L.geoJson(data, {
+        filter: function(feature, layer) {
+          return feature.properties.Tag.includes("Arabic");
+        },
+        pointToLayer: function(feature, latlng) {
+          var thisMarker = L.marker(latlng, {
+            icon: iconColor(colors.arabic.name),
+            opacity: 0.7
+          });
+          thisMarker.on("click", renderThisContent);
+          return thisMarker;
+        }
+      });
+      
+      var english = L.geoJson(data, {
+        filter: function(feature, layer) {
+          return feature.properties.Tag.includes("English");
+        },
+        pointToLayer: function(feature, latlng) {
+          var thisMarker = L.marker(latlng, {
+            icon: iconColor(colors.english.name),
+            opacity: 0.7
+          });
+          thisMarker.on("click", renderThisContent);
+          return thisMarker;
+        }
+      });
+
+      
+      var layersArray = [english, arabic];
+
+      layersArray.forEach(function(element) {
+        element.addTo(map)
+      });
+
+      // FILTER 
+      
+      $("#english").click(function() {
+        map.addLayer(english)
+      });
+      $("#arabic").click(function() {
+        map.addLayer(arabic)
+      });
+      $("#alllayers").click(function() {
+        layersArray.forEach(function(element) {
+          map.addLayer(element)
+        });
+      });
+      $("#nolayers").click(function() {
+        layersArray.forEach(function(element) {
+          map.removeLayer(element)
+        });
+      });
+      
+    });
+  </script>
+</body>
+
+</html>
