@@ -1,0 +1,53 @@
+ body {
+      background: #000;
+      min-height: 100vh;
+    }
+    .columns {
+    margin-top: 0;
+    
+    }
+  .container{
+    z-index: 1;
+    }
+    h2,
+    p {
+      color: #f8f9fa;
+    }
+    
+    h2{
+      font-size: 2rem;
+      line-height: 1.5;
+      margin-bottom: 0.25rem;
+    }
+    p{
+      margin-bottom: 0.25rem;
+    }
+    
+    #filter-buttons{
+      margin-bottom: 1rem;
+    }
+    
+    .button.is-small {
+    border-color: transparent;
+      margin-right: 0.5rem;
+      font-weight: 500;
+    }
+    #map {
+      height: 90vh;
+    }
+
+    #content {
+      height: 90vh;
+      margin-top: 3rem;
+      -webkit-transition: opacity .5s ease-in-out;
+      -moz-transition: opacity .5s ease-in-out;
+      -ms-transition: opacity .5s ease-in-out;
+      -o-transition: opacity .5s ease-in-out;
+      transition: opacity .5s ease-in-out;
+    }
+    
+    img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 0.75rem;
+    }
