@@ -1,21 +1,29 @@
 // http://bl.ocks.org/zross/47760925fcb1643b4225
 
-var colors = {
-  "english": {
-    "name": `cyan`,
-    "code": `#00ffff`
+var tags = {
+  "English": {
+    "color": `cyan`,
+    "colorcode": `#00ffff`,
+    "layer":{},
+    "visible": true
   },
-  "arabic": {
-    "name": `magenta`,
-    "code": `#eb00ff`
+  "Arabic": {
+    "color": `magenta`,
+    "colorcode": `#eb00ff`,
+    "layer":{},
+    "visible": true
   }
 };
 
-document.getElementById("arabic").style.backgroundColor = colors.arabic.code;
-document.getElementById("english").style.backgroundColor = colors.english.code;
+var filters = document.getElementById('filter-buttons');
+for (key in tags) {
+  filters.innerHTML += `<a id=` +key+ ` class="button is-small is-rounded"> ` + key+ ` </a>`; 
+  document.getElementById(key).style.backgroundColor = tags[key]["colorcode"]; 
+}
 
 var content = [0];
 var contentDiv = document.getElementById('content');
+
 var currentID = 0;
 
 function onEachFeature(feature, layer) {
@@ -69,19 +77,9 @@ function iconColor(color) {
     iconUrl: `icn/circle-` + color + `.svg`,
     iconSize: [10, 10]
   });
-
 }
 
-function circleiconColor(color) {
-  return {
-    radius: 8,
-    fillColor: color,
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.5
-  }
-}
+// Data Promise
 
 var promise = $.getJSON("grafs.json");
 promise.then(function (data) {
@@ -89,61 +87,54 @@ promise.then(function (data) {
   L.geoJson(data, {
     onEachFeature: onEachFeature
   });
+  
+  for (key in tags) {
 
-  var arabic = L.geoJson(data, {
-    filter: function (feature, layer) {
-      return feature.properties.Tag.includes("Arabic");
-    },
-    pointToLayer: function (feature, latlng) {
-      var thisMarker = L.marker(latlng, {
-        icon: iconColor(colors.arabic.name),
-        opacity: 0.7
-      });
-      thisMarker.on("click", renderThisContent);
-      return thisMarker;
-    }
-  });
-
-  var english = L.geoJson(data, {
-    filter: function (feature, layer) {
-      return feature.properties.Tag.includes("English");
-    },
-    pointToLayer: function (feature, latlng) {
-      var thisMarker = L.marker(latlng, {
-        icon: iconColor(colors.english.name),
-        opacity: 0.7
-      });
-      thisMarker.on("click", renderThisContent);
-      return thisMarker;
-    }
-  });
-
-  var layersArray = [english, arabic];
-
-  layersArray.forEach(function (element) {
-    element.addTo(map)
-  });
-
-  // FILTER 
-
-  $("#english").click(function () {
-    map.addLayer(english)
-  });
-  $("#arabic").click(function () {
-    map.addLayer(arabic)
-  });
-  $("#alllayers").click(function () {
-    layersArray.forEach(function (element) {
-      map.addLayer(element)
+    tags[key]["layer"] = L.geoJson(data, {
+      filter: function (feature, layer) {
+        return feature.properties.Tag.includes(key);
+      },
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, {
+          icon: iconColor(tags[key]["color"]),
+          opacity: 0.7
+        }).on("click", renderThisContent);  
+      }
     });
+    tags[key]["layer"].addTo(map);
+    console.log(key, tags[key]["color"]);
+    
+  }
+  
+  // FILTERS 
+  
+  $("#alllayers").click(function () {
+    for (key in tags) {
+      map.addLayer(tags[key]["layer"]);
+      tags[key]["visible"] = true;
+    }
   });
   $("#nolayers").click(function () {
-    layersArray.forEach(function (element) {
-      map.removeLayer(element)
-    });
+    for (key in tags) {
+      map.removeLayer(tags[key]["layer"]);
+      tags[key]["visible"] = false;
+    }
   });
+  
+   $("#English").click(function () {
+     var tag = tags["English"];
+     if(tag["visible"]){ map.removeLayer(tag["layer"]); }
+     else{ map.addLayer(tag["layer"]); }
+     tag["visible"] = !tag["visible"];
+    });
+   $("#Arabic").click(function () {
+     var tag = tags["Arabic"];
+     if(tag["visible"]){ map.removeLayer(tag["layer"]); }
+     else{ map.addLayer(tag["layer"]); }
+     tag["visible"] = !tag["visible"];
+    });
 
-});
+}); //End Promise
 
 // MODAL
 
@@ -157,3 +148,17 @@ function toggleModalClasses(event) {
 $('.open-modal').click(toggleModalClasses);
 $('.modal-close').click(toggleModalClasses);
 $('.modal-background').click(toggleModalClasses);
+
+
+/*
+function circleiconColor(color) {
+  return {
+    radius: 8,
+    fillColor: color,
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.5
+  }
+}
+*/
