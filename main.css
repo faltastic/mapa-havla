@@ -110,9 +110,9 @@
  .switch label {
    position: relative;
    display: inline-block;
-   width: 3.5rem;
-   height: 1.75rem;
-   border-radius: 1.75rem;
+   width: 3rem;
+   height: 1.5rem;
+   border-radius: 1.5rem;
    background: #ccc;
    cursor: pointer;
  }
@@ -121,26 +121,26 @@
    position: relative;
    display: inline-block;
    content: '';
-   width: 1.65rem;
-   height: 1.65rem;
+   width: 1.4rem;
+   height: 1.4rem;
    top: 0.05rem;
    left: 0.05rem;
-   border-radius: 1.75rem;
+   border-radius: 1.5rem;
    background: #f8f9fa;
    pointer-events: none;
    transition: all .4s ease-in-out
  }
 
  .switch label:active:after {
-   width: 1.75rem;
+   width: 1.5rem;
  }
 
  .switch input:checked + label:active:after {
-   left: 1.75rem;
+   left: 1.5rem;
  }
 
  .switch input:checked + label:after {
-   left: 1.75rem;
+   left: 1.5rem;
    background: #f8f9fa;
  }
 
