@@ -17,23 +17,46 @@
 <body>
   <div class="container">
     <section id="main">
+      <div class="columns is-desktop no-margin-btm">
+        <div class="column is-two-thirds">
+
+          <h1> Quds Map </h1>
+        </div>
+        <div class="column is-one-third">
+
+          <div class="switch-area">
+
+            <span class="txt-switch"> Light Switch </span>
+            <input type="checkbox" class="switch" />
+
+
+
+          </div>
+        </div>
+      </div>
       <div class="columns is-desktop">
         <div class="column is-two-thirds">
-          <div id="filter-buttons">
-            <a id="alllayers" class="button is-small is-rounded is-light"> All </a>
-            <a id="nolayers" class="button is-small is-rounded is-dark"> None </a>
-            <!--  More filter links are added in JS -->
-          </div>
+
           <!--  The Map -->
           <div id="map"></div>
 
         </div>
 
-        <div class="column is-one-third" id="content">
-          <h2> Quds minus Google Maps</h2>
-          <p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." </p>
+        <div class="column is-one-third">
+          <div id="content">
+            <h2> Quds minus Google Maps</h2>
+            <p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." </p>
+          </div>
+          <div id="filter-buttons">
+            <a id="alllayers" class="button is-small is-rounded is-light"> All </a>
+            <br />
+            <a id="nolayers" class="button is-small is-rounded is-dark"> None </a>
+            <!--  More filter links are added in JS -->
+          </div>
         </div>
+
+
       </div>
     </section>
   </div>

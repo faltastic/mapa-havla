@@ -4,21 +4,21 @@ var tags = {
   "English": {
     "color": `cyan`,
     "colorcode": `#00ffff`,
-    "layer":{},
+    "layer": {},
     "visible": true
   },
   "Arabic": {
     "color": `magenta`,
     "colorcode": `#eb00ff`,
-    "layer":{},
+    "layer": {},
     "visible": true
   }
 };
 
 var filters = document.getElementById('filter-buttons');
 for (key in tags) {
-  filters.innerHTML += `<a id=` +key+ ` class="button is-small is-rounded"> ` + key+ ` </a>`; 
-  document.getElementById(key).style.backgroundColor = tags[key]["colorcode"]; 
+  filters.innerHTML += `<br /> <a id=` + key + ` class="button is-small is-rounded"> ` + key + ` </a>`;
+  document.getElementById(key).style.backgroundColor = tags[key]["colorcode"];
 }
 
 var content = [0];
@@ -67,8 +67,17 @@ var CartoDB_DarkMatterNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.globa
   maxZoom: 19
 });
 
+var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
+});
+
+
 var map = L.map('map')
+  //.addLayer(CartoDB_Positron)
   .addLayer(CartoDB_DarkMatterNoLabels)
+
   .setView([31.7852527, 35.231493600], 20)
   .setZoom(12);
 
@@ -87,7 +96,7 @@ promise.then(function (data) {
   L.geoJson(data, {
     onEachFeature: onEachFeature
   });
-  
+
   for (key in tags) {
 
     tags[key]["layer"] = L.geoJson(data, {
@@ -98,16 +107,16 @@ promise.then(function (data) {
         return L.marker(latlng, {
           icon: iconColor(tags[key]["color"]),
           opacity: 0.7
-        }).on("click", renderThisContent);  
+        }).on("click", renderThisContent);
       }
     });
     tags[key]["layer"].addTo(map);
     console.log(key, tags[key]["color"]);
-    
+
   }
-  
+
   // FILTERS 
-  
+
   $("#alllayers").click(function () {
     for (key in tags) {
       map.addLayer(tags[key]["layer"]);
@@ -120,19 +129,25 @@ promise.then(function (data) {
       tags[key]["visible"] = false;
     }
   });
-  
-   $("#English").click(function () {
-     var tag = tags["English"];
-     if(tag["visible"]){ map.removeLayer(tag["layer"]); }
-     else{ map.addLayer(tag["layer"]); }
-     tag["visible"] = !tag["visible"];
-    });
-   $("#Arabic").click(function () {
-     var tag = tags["Arabic"];
-     if(tag["visible"]){ map.removeLayer(tag["layer"]); }
-     else{ map.addLayer(tag["layer"]); }
-     tag["visible"] = !tag["visible"];
-    });
+
+  $("#English").click(function () {
+    var tag = tags["English"];
+    if (tag["visible"]) {
+      map.removeLayer(tag["layer"]);
+    } else {
+      map.addLayer(tag["layer"]);
+    }
+    tag["visible"] = !tag["visible"];
+  });
+  $("#Arabic").click(function () {
+    var tag = tags["Arabic"];
+    if (tag["visible"]) {
+      map.removeLayer(tag["layer"]);
+    } else {
+      map.addLayer(tag["layer"]);
+    }
+    tag["visible"] = !tag["visible"];
+  });
 
 }); //End Promise
 
@@ -162,3 +177,30 @@ function circleiconColor(color) {
   }
 }
 */
+
+$(".switch").each(function (i) {
+  var classes = $(this).attr("class"),
+    id = $(this).attr("id"),
+    name = $(this).attr("name");
+  console.log($(this).attr("value"));
+
+  $(this).wrap('<div class="switch" id="' + name + '"></div>');
+  $(this).after('<label for="switch-' + i + '"></label>');
+  $(this).attr("id", "switch-" + i);
+  $(this).attr("name", name);
+});
+$(".switch input").change(function () {
+  $("body").toggleClass("light");
+  switchMap();
+});
+
+function switchMap() {
+
+  if (map.hasLayer(CartoDB_DarkMatterNoLabels)) {
+    map.removeLayer(CartoDB_DarkMatterNoLabels);
+    map.addLayer(CartoDB_Positron);
+  } else {
+    map.removeLayer(CartoDB_Positron);
+    map.addLayer(CartoDB_DarkMatterNoLabels);
+  }
+}
