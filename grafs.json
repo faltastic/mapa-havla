@@ -6,7 +6,7 @@
       "type": "Feature",
       "properties": {
         "id": 1,
-        "Photo": "IMG_4045.JPG",
+        "Name": "IMG_4045.JPG",
         "Tag": "Arabic, Political, Palestinian, PFLP, Resistance, Fight, Leader",
         "Title": "PFLP leader Abu Ali Mustafa (Mustafa al Zibri) with a rifle and PFLP logo",
         "Description": "Abu Ali Mustafa ( aka Mustafa al Zibri) was one of the PFLP leaders. He was killed in 2001. PFLP’s armed wing was renamed Abu Ali Mustafa Brigades"
@@ -16,12 +16,11 @@
         "type": "Point",
         "coordinates": [35.2314936000, 31.7852527]
       }
-    }, 
-    {
+        }, {
       "type": "Feature",
       "properties": {
          "id": 2,
-        "Photo": "IMG_4468.JPG",
+        "Name": "IMG_4468.JPG",
         "Tag": "English,  Religion, Christianity, Symbols, Chrsitmas",
         "Title": "Happy New Year",
         "Description": "Abu Ali Mustafa ( aka Mustafa al Zibri) was one of the PFLP leaders. He was killed in 2001. PFLP’s armed wing was renamed Abu Ali Mustafa Brigades"
@@ -34,7 +33,7 @@
       "type": "Feature",
       "properties": {
         "id": 3,
-        "Photo": "IMG_4053.JPG",
+        "Name": "IMG_4053.JPG",
         "Tag": "Arabic, Political, Palestinian, Map",
         "Title": "اذار٣٠ ; الأرض",
         "Description": "March 30 is the Land Day - an annual commemoration day for Arab citizens of Israel and Palestinians to remember the events of 1976"
