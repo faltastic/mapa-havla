@@ -12,7 +12,14 @@ var tags = {
     "colorcode": `#eb00ff`,
     "layer": {},
     "visible": true
+  },
+  "DickPic": {
+    "color": `yellow`,
+    "colorcode": `#faed27`,
+    "layer": {},
+    "visible": true
   }
+
 };
 
 var filters = document.getElementById('filter-buttons');
