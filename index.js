@@ -12,7 +12,14 @@ var tags = {
     "colorcode": `#eb00ff`,
     "layer": {},
     "visible": true
+  },
+  "DickPic": {
+    "color": `yellow`,
+    "colorcode": `#faed27`,
+    "layer": {},
+    "visible": true
   }
+
 };
 
 var filters = document.getElementById('filter-buttons');
@@ -27,7 +34,7 @@ var contentDiv = document.getElementById('content');
 var currentID = 0;
 
 function onEachFeature(feature, layer) {
-  var contentHtml = `<a class="open-modal" data-modal-id="#my-modal"><img src="img/` + feature.properties.Name + `"  /></a>`;
+  var contentHtml = `<a class="open-modal" data-modal-id="#my-modal"><img src="img/` + feature.properties.Photo + `"  /></a>`;
   contentHtml += `<h2>` + feature.properties.Title + `</h2>`;
   contentHtml += `<p>` + feature.properties.Description + `</p>`;
   content[feature.properties.id] = contentHtml;
@@ -41,13 +48,14 @@ function renderThisContent(e) {
     contentDiv.innerHTML = content[currentID];
     contentDiv.style.opacity = 1;
     $('.open-modal').click(toggleModalClasses);
-    document.getElementById("imgModal").src = `img/` + e.target.feature.properties.Name;
+    document.getElementById("imgModal").src = `img/` + e.target.feature.properties.Photo;
   }, 500);
 
 }
 
 // MAP
 
+/*
 var Stamen_TonerBackground = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.{ext}', {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   subdomains: 'abcd',
@@ -60,6 +68,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fa
   subdomains: 'abcd',
   maxZoom: 19
 });
+*/
 
 var CartoDB_DarkMatterNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -88,10 +97,9 @@ function iconColor(color) {
   });
 }
 
-// Data Promise
+// Data Handling
 
-var promise = $.getJSON("grafs.json");
-promise.then(function (data) {
+function mapTheData(data) {
 
   L.geoJson(data, {
     onEachFeature: onEachFeature
@@ -123,6 +131,7 @@ promise.then(function (data) {
       tags[key]["visible"] = true;
     }
   });
+  
   $("#nolayers").click(function () {
     for (key in tags) {
       map.removeLayer(tags[key]["layer"]);
@@ -130,26 +139,21 @@ promise.then(function (data) {
     }
   });
 
-  $("#English").click(function () {
-    var tag = tags["English"];
-    if (tag["visible"]) {
-      map.removeLayer(tag["layer"]);
-    } else {
-      map.addLayer(tag["layer"]);
-    }
-    tag["visible"] = !tag["visible"];
-  });
-  $("#Arabic").click(function () {
-    var tag = tags["Arabic"];
-    if (tag["visible"]) {
-      map.removeLayer(tag["layer"]);
-    } else {
-      map.addLayer(tag["layer"]);
-    }
-    tag["visible"] = !tag["visible"];
-  });
+  for (key in tags) {
+    console.log(document.getElementById(key));
+    let tag = tags[key];
+    document.getElementById(key).onclick = function(){
+      if (tag["visible"]) {
+        map.removeLayer(tag["layer"]);
+      } else {
+        map.addLayer(tag["layer"]);
+      }
+      tag["visible"] = !tag["visible"];
+    };
+  }  
 
-}); //End Promise
+}; 
+
 
 // MODAL
 
