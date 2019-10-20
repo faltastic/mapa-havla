@@ -85,10 +85,10 @@ var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/
 
 var map = L.map('map')
   //.addLayer(CartoDB_Positron)
-  .addLayer(CartoDB_DarkMatterNoLabels)
+  .addLayer(CartoDB_Positron)
 
-  .setView([31.7852527, 35.231493600], 20)
-  .setZoom(12);
+  .setView([50.0825011, 14.4266144], 2)
+  .setZoom(13);
 
 function iconColor(color) {
   return L.icon({
