@@ -1,30 +1,32 @@
 // http://bl.ocks.org/zross/47760925fcb1643b4225
 
 var tags = {
-  "English": {
+  "Praha1": {
+    "name": "Praha 1",
     "color": `cyan`,
     "colorcode": `#00ffff`,
     "layer": {},
     "visible": true
   },
-  "Arabic": {
+  "Praha2": {
+    "name": "Vinohrady",
     "color": `magenta`,
     "colorcode": `#eb00ff`,
     "layer": {},
     "visible": true
   },
-  "DickPic": {
+  "Praha3": {
+    "name": "Žižkov",
     "color": `yellow`,
     "colorcode": `#faed27`,
     "layer": {},
     "visible": true
   }
-
 };
 
 var filters = document.getElementById('filter-buttons');
 for (key in tags) {
-  filters.innerHTML += `<br /> <a id=` + key + ` class="button is-small is-rounded"> ` + key + ` </a>`;
+  filters.innerHTML += `<a id=` + key + ` class="button is-small is-rounded"> ` + tags[key]["name"] + ` </a>`;
   document.getElementById(key).style.backgroundColor = tags[key]["colorcode"];
 }
 
@@ -87,8 +89,8 @@ var map = L.map('map')
   //.addLayer(CartoDB_Positron)
   .addLayer(CartoDB_Positron)
 
-  .setView([50.0825011, 14.4266144], 2)
-  .setZoom(13);
+  .setView([50.0825011, 14.4266144], 20)
+  .setZoom(14);
 
 function iconColor(color) {
   return L.icon({
